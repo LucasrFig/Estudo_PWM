@@ -13,12 +13,6 @@
 #define jump 10 //velocidade na qual o pwm aumenta/diminui
 
 
-uint get_pwm_feq();//Frequência PWM
-uint get_pwm_active_time_us();//tempo ativo no período
-uint get_pwm_duty_cycle();//Porcentagem do duty cycle
-uint get_pwm_period();//período total PWM
-
-
 void wrapHandler(){
     static int fade = 500; //nível do PWM
     static bool rise = false; //flag para elevar ou reduzir o nível
@@ -29,6 +23,7 @@ void wrapHandler(){
         if(fade > 2400){ //caso o fade seja maior que 255
             fade = 2400; 
             rise = false;//passa a reduzir agora
+            
         }
     }
     else{ //caso a iluminação seja reduzida
@@ -38,9 +33,10 @@ void wrapHandler(){
             rise = true; //Passa a elevar agora
         }
     }
-    //printf("%d\n",fade);
+    //printf("%d\n",fade);//Printf pra acompanhar o nível do PWM na função
     pwm_set_gpio_level(PWM_pin, fade);
 }
+
 
 //Configura o pwm
 uint gpio_pwm_config(uint gpio, float divisor,uint wrap,uint dutycycle){
@@ -53,7 +49,7 @@ uint gpio_pwm_config(uint gpio, float divisor,uint wrap,uint dutycycle){
     irq_set_exclusive_handler(PWM_IRQ_WRAP, wrapHandler); 
     irq_set_enabled(PWM_IRQ_WRAP, true); //Habilitar ou desabilitar uma interrupção específica
     
-    //Configura 
+    //Configurar clock
     pwm_set_clkdiv(slice,divisor);//Define o valor do divisor de clock 
     pwm_set_wrap(slice,wrap);//Define Valor de Wrap
     pwm_set_gpio_level(gpio,dutycycle);//Define valor Duty Cycle
@@ -70,20 +66,20 @@ int main()
     uint slice1 = gpio_pwm_config(PWM_pin,divisor_led,wrap_led,dutyc_1);
     pwm_set_enabled(slice1, true); //habilita o pwm no slice correspondente
     
-    
-
     for(uint i = 2400;i>=500;i--){
         pwm_set_gpio_level(PWM_pin,i);
         if(i==dutyc_1||i==dutyc_2||i==dutyc_3){
+            //printf("stop");//Printf para debug
             sleep_ms(5000);
         }
     }
-
-    pwm_set_irq_enabled(slice1, true);
-
+    
     while (1) {
+        pwm_set_irq_enabled(slice1, true);
     }
 }
+
+
 
 
 

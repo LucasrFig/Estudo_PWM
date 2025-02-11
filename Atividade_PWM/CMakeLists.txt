@@ -56,6 +56,7 @@ target_include_directories(Atividade_PWM PRIVATE
 # Add any user requested libraries
 target_link_libraries(Atividade_PWM 
         hardware_pwm
+        pico_bootrom
         )
 
 pico_add_extra_outputs(Atividade_PWM)
