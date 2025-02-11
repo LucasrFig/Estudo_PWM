@@ -10,7 +10,7 @@
 #define dutyc_1 2400
 #define dutyc_2 1470
 #define dutyc_3 500
-#define jump 10 //velocidade na qual o pwm aumenta/diminui
+#define jump 5 //velocidade na qual o pwm aumenta/diminui
 
 
 void wrapHandler(){
