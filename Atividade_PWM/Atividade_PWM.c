@@ -3,7 +3,7 @@
 #include "hardware/pwm.h"
 #include "hardware/clocks.h" 
 
-#define PWM_pin 11
+#define PWM_pin 22
 #define wrap_led 19999.0
 #define divisor_led 125.0
 //Duty Cycles  
@@ -78,21 +78,10 @@ int main()
             sleep_ms(5000);
         }
     }
-    
-    
-        //smooth_movment();
-        /*double frequency_pwm = (clock_get_hz(clk_sys))/((wrap_led+1.0)*divisor_led);
-        double period_pwm = ((wrap_led + 1)*divisor_led*1000)/(clock_get_hz(clk_sys));
-        double dc_pwm = ((dutyc_1*100)/(wrap_led));
-        double activet_pwm = ((dutyc_1*divisor_led*1000000)/(clock_get_hz(clk_sys)));
-        printf("Frequency: [%.0lfHz]\n",frequency_pwm);
-        printf("Period: [%.0lfms]\n",period_pwm);
-        printf("Duty Cycle: [%lf%%]\n",dc_pwm);
-        printf("Active time in 'us': [%.0lfus]\n",activet_pwm);
-        printf("================================================\n");*/
+
+    pwm_set_irq_enabled(slice1, true);
 
     while (1) {
-        pwm_set_irq_enabled(slice1, true);
     }
 }
 
